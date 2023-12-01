@@ -1,4 +1,8 @@
+# ide stuff
 /.idea
 
+# rust stuff
 **/target
 
+# aoc stuff
+**/input.txt
