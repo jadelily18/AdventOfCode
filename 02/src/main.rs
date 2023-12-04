@@ -5,6 +5,7 @@ fn main() -> Result<(), Error> {
     let input = fs::read_to_string("input.txt")?;
 
     let mut game_id_total: i32 = 0;
+    let mut game_power_total: i32 = 0;
 
     for line in input.split("\n") {
         if line.is_empty() {
@@ -12,6 +13,10 @@ fn main() -> Result<(), Error> {
         }
 
         let mut is_game_valid = true;
+
+        let mut red_minimum = 0;
+        let mut green_minimum = 0;
+        let mut blue_minimum = 0;
 
         let game_id = str::parse::<i8>(
             &*get_between(line, "Game ", ":")
@@ -52,11 +57,22 @@ fn main() -> Result<(), Error> {
                 }
             }
 
+            if red_total > red_minimum {
+                red_minimum = red_total
+            }
+            if green_total > green_minimum {
+                green_minimum = green_total
+            }
+            if blue_total > blue_minimum {
+                blue_minimum = blue_total
+            }
+
             if red_total > RED_LIMIT || green_total > GREEN_LIMIT || blue_total > BLUE_LIMIT {
                 is_game_valid = false;
-                break;
             }
         }
+
+        game_power_total += (red_minimum * green_minimum * blue_minimum);
 
         if is_game_valid {
             game_id_total += i32::from(game_id)
@@ -66,6 +82,8 @@ fn main() -> Result<(), Error> {
     }
 
     println!("Game ID Total: {game_id_total}");
+    println!("Game Power Total: {game_power_total}");
+
 
     Ok(())
 }
